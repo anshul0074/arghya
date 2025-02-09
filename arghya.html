@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vedic Horoscope</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #013220;
+            color: #E0F2E9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 450px;
+            padding: 30px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #026440, #014421);
+            box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        input, button {
+            margin: 12px 0;
+            padding: 12px;
+            width: 100%;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        input {
+            background-color: #E0F2E9;
+            color: #014421;
+            font-weight: 500;
+        }
+        button {
+            background: #FFD700;
+            color: #014421;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #FFC107;
+        }
+        h2 {
+            font-size: 28px;
+            font-family: 'Great Vibes', cursive;
+            color: #FFD700;
+        }
+        h3 {
+            margin-top: 20px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 16px;
+            font-style: italic;
+            color: #A7E0C3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>✨ Gulika calculator ✨</h2>
+        <p><em>For you, Yashika 💚</em></p>
+        <label>Birth Date:</label>
+        <input type="date" id="birthdate">
+        <label>Birth Time:</label>
+        <input type="time" id="birthtime">
+        <label>Latitude:</label>
+        <input type="number" id="latitude" step="any">
+        <label>Longitude:</label>
+        <input type="number" id="longitude" step="any">
+        <button onclick="calculateGulika()">Get Gulika Position</button>
+        <h3 id="result"></h3>
+    </div>
+    
+    <div class="footer">Made with ❤️ for Yashika</div>
+
+    <script>
+        function calculateGulika() {
+            let birthdate = document.getElementById("birthdate").value;
+            let birthtime = document.getElementById("birthtime").value;
+            let latitude = parseFloat(document.getElementById("latitude").value) || 0;
+            let longitude = parseFloat(document.getElementById("longitude").value) || 0;
+
+            if (!birthdate || !birthtime) {
+                document.getElementById("result").innerText = "Please enter all details.";
+                return;
+            }
+            
+            let birthDay = new Date(birthdate).getDate();
+            let birthHour = parseInt(birthtime.split(":")[0]);
+            let birthMinute = parseInt(birthtime.split(":")[1]);
+            
+            let sum = birthDay + birthHour + birthMinute;
+            let gulikaPosition = (sum % 12) + 1;
+            
+            document.getElementById("result").innerText = "✨ Position of Gulika in your chart is: " + gulikaPosition + " ✨";
+        }
+    </script>
+</body>
+</html>
