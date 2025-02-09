@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vedic Horoscope</title>
+    <title>Gulika Calculator</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap');
         body {
@@ -69,29 +69,58 @@
 </head>
 <body>
     <div class="container">
-        <h2>✨ Gulika calculator ✨</h2>
+        <h2>✨ Gulika Calculator ✨</h2>
         <p><em>For you, Yashika 💚</em></p>
         <label>Birth Date:</label>
         <input type="date" id="birthdate">
         <label>Birth Time:</label>
         <input type="time" id="birthtime">
-        <label>Latitude:</label>
-        <input type="number" id="latitude" step="any">
-        <label>Longitude:</label>
-        <input type="number" id="longitude" step="any">
-        <button onclick="calculateGulika()">Get Gulika Position</button>
+        <label>City:</label>
+        <input type="text" id="city">
+        <label>State:</label>
+        <input type="text" id="state">
+        <label>Country:</label>
+        <input type="text" id="country">
+        <button onclick="getCoordinates()">Get Gulika Position</button>
         <h3 id="result"></h3>
     </div>
     
     <div class="footer">Made with ❤️ for Yashika</div>
 
     <script>
-        function calculateGulika() {
+        function getCoordinates() {
+            let city = document.getElementById("city").value;
+            let state = document.getElementById("state").value;
+            let country = document.getElementById("country").value;
+            
+            if (!city || !country) {
+                document.getElementById("result").innerText = "Please enter city and country.";
+                return;
+            }
+            
+            let query = `${city},${state},${country}`;
+            let url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        let latitude = parseFloat(data[0].lat);
+                        let longitude = parseFloat(data[0].lon);
+                        calculateGulika(latitude, longitude);
+                    } else {
+                        document.getElementById("result").innerText = "Location not found. Try again.";
+                    }
+                })
+                .catch(() => {
+                    document.getElementById("result").innerText = "Error retrieving location.";
+                });
+        }
+        
+        function calculateGulika(latitude, longitude) {
             let birthdate = document.getElementById("birthdate").value;
             let birthtime = document.getElementById("birthtime").value;
-            let latitude = parseFloat(document.getElementById("latitude").value) || 0;
-            let longitude = parseFloat(document.getElementById("longitude").value) || 0;
-
+            
             if (!birthdate || !birthtime) {
                 document.getElementById("result").innerText = "Please enter all details.";
                 return;
